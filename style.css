@@ -1,0 +1,218 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --orange: #ED8114;
+    --page-gray: #f2f2f2;
+    --calculator-black: #000000;
+    --key-dark: #232323;
+    --switch-gray: #8a8a8a;
+    --white: #ffffff;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: var(--page-gray);
+}
+
+.page {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 25px 14px;
+}
+
+/*
+    Figma reference:
+    Calculator panel is approximately 380px wide x 620px tall.
+    The outer screenshot is 807 x 658, with each calculator around
+    380 x 620 and a small gap between them.
+*/
+.calculator {
+    width: 380px;
+    height: 620px;
+    background: var(--calculator-black);
+    color: var(--white);
+    padding: 10px 10px 14px;
+    position: relative;
+}
+
+.calculator-header {
+    height: 52px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+}
+
+.calculator-header h1 {
+    margin: 0;
+    font-size: 27px;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.mode-control {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 6px;
+    /* The control remains anchored at the same top-right location
+       in both handedness modes. */
+}
+
+#modeLabel {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.switch {
+    width: 35px;
+    height: 20px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--switch-gray);
+    padding: 2px;
+    cursor: pointer;
+    position: relative;
+    flex: 0 0 auto;
+    transition: background 160ms ease;
+}
+
+.switch-knob {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    transition: transform 160ms ease;
+}
+
+.switch.on {
+    background: var(--orange);
+}
+
+.switch.on .switch-knob {
+    transform: translateX(15px);
+}
+
+.display {
+    height: 228px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 0 4px 14px;
+}
+
+.expression {
+    min-height: 42px;
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 400;
+}
+
+.result {
+    font-size: 53px;
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: -1px;
+}
+
+.keypad {
+    width: 100%;
+    height: 327px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 12px 13px;
+}
+
+/*
+    Default/right-handed layout:
+    operators stay in the right-most column.
+*/
+.key {
+    border: 0;
+    border-radius: 11px;
+    background: var(--key-dark);
+    color: #dedede;
+    font-size: 30px;
+    font-weight: 400;
+    cursor: pointer;
+    transition:
+        transform 80ms ease,
+        background 120ms ease,
+        color 120ms ease;
+    font-family: inherit;
+}
+
+.key:hover {
+    background: #303030;
+}
+
+.key:active {
+    transform: scale(0.96);
+}
+
+.key.utility,
+.key.operator {
+    color: var(--orange);
+}
+
+.key.equals {
+    background: var(--orange);
+    color: #fff;
+}
+
+/*
+    Left-handed mode:
+    The keypad is mirrored horizontally.
+    Because the calculator itself does NOT move and the header is
+    untouched, the toggle remains in the exact same position.
+*/
+.calculator.left-handed .keypad {
+    direction: rtl;
+}
+
+.calculator.left-handed .key {
+    direction: ltr;
+}
+
+.calculator.left-handed .mode-control {
+    /* Explicitly prevent mirroring of the toggle/header. */
+    direction: ltr;
+}
+
+/* Keep the visual size close to the Figma frame on smaller screens. */
+@media (max-width: 430px) {
+    .page {
+        padding: 12px;
+    }
+
+    .calculator {
+        width: min(380px, calc(100vw - 24px));
+        height: min(620px, calc(100vh - 24px));
+    }
+
+    .display {
+        height: 36vh;
+        min-height: 190px;
+    }
+
+    .keypad {
+        height: 48vh;
+        min-height: 300px;
+    }
+}
